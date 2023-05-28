@@ -1,0 +1,152 @@
+drop database Gym
+
+Create database Gym;
+use Gym;
+Create table Entrenamientos(
+Entrenamiento varchar (30) not null primary key,Horario varchar (20),Equipamiento varchar(35),
+
+);
+use Gym
+DROP TABLE CLIENTES
+drop table Entrenamientos
+Create table Clientes(
+
+Numero int not null identity (100,1) primary key, Nombre varchar(30),Telefono int , FechaIngreso date , Iniciomes date , Finmes date, Entrenamiento
+varchar(30) foreign key (Entrenamiento) REFERENCES Entrenamientos(Entrenamiento)
+
+);
+
+Create table Respaldo(
+Numero int, Nombre varchar(30),Telefono int , FechaIngreso date , Iniciomes date , Finmes date, Entrenamiento
+varchar(30), Tipo varchar (5),Fecha date
+
+);
+--Entrenamiento varchar (30) not null primary key,Horario varchar (20),Equipamiento varchar(35),
+Create table RespaldoEntrenamiento(
+Entrenamiento varchar (30) ,Horario varchar (20),Equipamiento varchar(35),Tipo varchar (5),Fecha date
+)
+drop table RespaldoEntrenamiento
+drop table respaldo
+SELECT * From RespaldoEntrenamiento
+
+truncate table RespaldoEntrenamiento
+
+
+INSERT INTO Clientes (Nombre,Telefono,FechaIngreso,Entrenamiento) VALUES
+
+('Maic',414,'2022/08/06','Pilates')
+;
+
+INSERT INTO Entrenamientos(Entrenamiento,Horario,Equipamiento) VALUES
+('Pesas','05:00-21:00','2 toallas'),
+('Cross_Fit','07:00-19:00','botas de charro'),
+('Pilates','8-10-17-18 hr','2 toallas')
+;
+
+SELECT * FROM Clientes INNER JOIN Entrenamientos 
+ON Entrenamientos.Entrenamiento=Clientes.Entrenamiento
+
+select * from CLIENTES
+
+select * from Entrenamientos
+
+--Numero int not null identity (100,1) primary key, Nombre varchar(30),Telefono int , FechaIngreso date , Iniciomes date , Finmes date, Entrenamiento
+--varchar(30) foreign key (Entrenamiento) REFERENCES Entrenamientos(Entrenamiento)
+
+create trigger INSERTAR
+on Clientes
+After insert
+as
+begin
+-----se declaran variables, que son inicializadas con los datos que son insertados
+declare @numero int, @nombre varchar(30), @telefono int, @fechaingreso date, @iniciomes date, @finmes date, @entrenamiento varchar(30)
+select @numero=[Numero], @nombre=[Nombre], @telefono=[Telefono], @fechaingreso=[FechaIngreso], @iniciomes=[Iniciomes], @finmes=[Finmes]
+,@entrenamiento=[Entrenamiento]
+from inserted
+
+----se inserta en la tabla PersonaRespaldo y ademas se aneza la "I" porque se inserta y la fecha en que se realiza la accion
+insert into Respaldo values (@numero, @nombre, @telefono,@fechaingreso,@iniciomes,@finmes,@entrenamiento, 'I', GETDATE())
+
+end
+
+SELECT * FROM Respaldo;
+
+INSERT INTO Clientes (Nombre,Telefono,FechaIngreso,Entrenamiento) VALUES
+
+('Maic2',414,'2022/08/06','Pilates')
+
+select * from clientes;
+
+-----Trigger BORRAR
+create trigger Borrar on Clientes
+after delete as
+begin
+declare  @numero int, @nombre varchar(30), @telefono int, @fechaingreso date, @iniciomes date, @finmes date, @entrenamiento varchar(30)
+select  @numero=[Numero], @nombre=[Nombre], @telefono=[Telefono], @fechaingreso=[FechaIngreso], @iniciomes=[Iniciomes], @finmes=[Finmes]
+,@entrenamiento=[Entrenamiento]
+from deleted
+insert into  Respaldo values (@numero, @nombre, @telefono,@fechaingreso,@iniciomes,@finmes,@entrenamiento, 'B', GETDATE())
+end
+
+create trigger Modifica on Clientes
+after update as
+begin
+declare @numero int, @nombre varchar(30), @telefono int, @fechaingreso date, @iniciomes date, @finmes date, @entrenamiento varchar(30)
+select @numero=[Numero], @nombre=[Nombre], @telefono=[Telefono], @fechaingreso=[FechaIngreso], @iniciomes=[Iniciomes], @finmes=[Finmes]
+,@entrenamiento=[Entrenamiento]
+from deleted
+insert into Respaldo values (@numero, @nombre, @telefono,@fechaingreso,@iniciomes,@finmes,@entrenamiento, 'A', GETDATE())
+end
+
+DROP TRIGGER Modifica
+SELECT * FROM CLIENTES;
+UPDATE Clientes SET Numero=108  where Numero=106;
+UPDATE Clientes SET Telefono=108  where Numero=106;
+
+truncate table RespaldoEntrenamiento
+--Entrenamiento varchar (30) not null primary key,Horario varchar (20),Equipamiento varchar(35),
+create trigger INSERTARE
+on Entrenamientos
+After insert
+as
+begin
+-----se declaran variables, que son inicializadas con los datos que son insertados
+declare @entrenamiento varchar(30), @Horario varchar(20), @equipamiento varchar(35)
+select @entrenamiento=[Entrenamiento], @Horario=[Horario], @equipamiento=[Equipamiento]
+from inserted
+
+----se inserta en la tabla PersonaRespaldo y ademas se aneza la "I" porque se inserta y la fecha en que se realiza la accion
+insert into RespaldoEntrenamiento values (@entrenamiento,@Horario,@equipamiento, 'I', GETDATE())
+
+end
+
+create trigger BorrarE
+on Entrenamientos
+After delete
+as
+begin
+-----se declaran variables, que son inicializadas con los datos que son insertados
+declare @entrenamiento varchar(30), @Horario varchar(20), @equipamiento varchar(35)
+select @entrenamiento=[Entrenamiento], @Horario=[Horario], @equipamiento=[Equipamiento]
+from deleted
+
+----se inserta en la tabla PersonaRespaldo y ademas se aneza la "I" porque se inserta y la fecha en que se realiza la accion
+insert into RespaldoEntrenamiento values (@entrenamiento,@Horario,@equipamiento, 'B', GETDATE())
+
+end
+
+create trigger ModificarE
+on Entrenamientos
+After update
+as
+begin
+-----se declaran variables, que son inicializadas con los datos que son insertados
+declare @entrenamiento varchar(30), @Horario varchar(20), @equipamiento varchar(35)
+select @entrenamiento=[Entrenamiento], @Horario=[Horario], @equipamiento=[Equipamiento]
+from deleted
+
+----se inserta en la tabla PersonaRespaldo y ademas se aneza la "I" porque se inserta y la fecha en que se realiza la accion
+insert into RespaldoEntrenamiento values (@entrenamiento,@Horario,@equipamiento, 'M', GETDATE())
+
+end
+drop trigger ModificarE

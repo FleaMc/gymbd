@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="de636124-8260-49fa-b8b2-3b898a5805a4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="141"/>
+	<parameter name="Entrenamiento" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Fecha" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     clientes.`Numero` AS clientes_Numero,
+     clientes.`Nombre` AS clientes_Nombre,
+     clientes.`Telefono` AS clientes_Telefono,
+     clientes.`FechaIngreso` AS clientes_FechaIngreso,
+     clientes.`Iniciomes` AS clientes_Iniciomes,
+     clientes.`Finmes` AS clientes_Finmes,
+     clientes.`Entrenamiento` AS clientes_Entrenamiento,
+     entrenamientos.`Entrenamiento` AS entrenamientos_Entrenamiento,
+     entrenamientos.`Horario` AS entrenamientos_Horario,
+     entrenamientos.`Equipamiento` AS entrenamientos_Equipamiento
+FROM
+     `entrenamientos` entrenamientos INNER JOIN `clientes` clientes ON entrenamientos.`Entrenamiento` = clientes.`Entrenamiento`
+WHERE
+     clientes.`FechaIngreso` = $P{Fecha}]]>
+	</queryString>
+	<field name="clientes_Numero" class="java.lang.Long"/>
+	<field name="clientes_Nombre" class="java.lang.String"/>
+	<field name="clientes_Telefono" class="java.lang.Long"/>
+	<field name="clientes_FechaIngreso" class="java.lang.String"/>
+	<field name="clientes_Iniciomes" class="java.lang.String"/>
+	<field name="clientes_Finmes" class="java.lang.String"/>
+	<field name="clientes_Entrenamiento" class="java.lang.String"/>
+	<field name="entrenamientos_Entrenamiento" class="java.lang.String"/>
+	<field name="entrenamientos_Horario" class="java.lang.String"/>
+	<field name="entrenamientos_Equipamiento" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="333" splitType="Stretch">
+			<textField>
+				<reportElement x="26" y="169" width="100" height="20" uuid="74274d6c-42b2-4181-bce9-7c9b0f63e469"/>
+				<textFieldExpression><![CDATA[$F{clientes_Numero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="179" y="169" width="100" height="20" uuid="784a7234-c3e5-46c8-83af-9aea4a1fe21e"/>
+				<textFieldExpression><![CDATA[$F{clientes_Nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="169" width="100" height="20" uuid="60ddc26c-24f6-46df-a421-d91ae564d4ac"/>
+				<textFieldExpression><![CDATA[$F{clientes_FechaIngreso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="459" y="169" width="100" height="20" uuid="6622a282-4363-45a2-bebe-513e158a3564"/>
+				<textFieldExpression><![CDATA[$F{clientes_Entrenamiento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

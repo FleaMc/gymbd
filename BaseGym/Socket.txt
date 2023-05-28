@@ -1,0 +1,3 @@
+en el caso de sockets hacer una interfaz la cual pueda dar de alta usuarios
+desde un socket cliente y mandarlo al servidor
+El server lo recibe y lo registra en la base de datos
